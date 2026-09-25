@@ -1,0 +1,9 @@
+# Secrets - must never go into version control.
+.env
+
+# Downloaded packages. Anyone can rebuild these with "npm install",
+# so there is no reason to store thousands of files in git.
+node_modules/
+
+# Mac clutter
+.DS_Store

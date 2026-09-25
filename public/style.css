@@ -1,0 +1,525 @@
+/* ============================================================
+   style.css - the single stylesheet for every page.
+
+   It is organised top to bottom as:
+     1. Design tokens (the colours, fonts and spacing we reuse)
+     2. Base       (resets and plain HTML elements)
+     3. Layout     (header, page container, footer)
+     4. Components (buttons, cards, badges, forms, tables)
+     5. Utilities  (tiny one-job helpers)
+
+   Plain CSS, no framework, so you can read every line.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. DESIGN TOKENS
+
+   These are CSS custom properties ("CSS variables"). We name every
+   colour and size ONCE here, then refer to it everywhere else as
+   var(--ink). Changing the whole site's accent colour later means
+   editing one line instead of hunting through the file.
+
+   This is exactly how professional design systems work, just smaller.
+   ------------------------------------------------------------ */
+:root {
+  /* Colours. "Paper" and "ink" rather than "white" and "black",
+     because the names should describe the JOB, not the value -
+     that way they still make sense if we change the shade. */
+  --paper:       #f6f4f0;
+  --surface:     #ffffff;
+  --ink:         #15181b;
+  --ink-soft:    #4a524e;
+  --muted:       #8b918c;
+  --line:        #e4e0d9;
+
+  --forest:      #123932;   /* the brand colour: deep, watch-shop green */
+  --forest-soft: #1d5348;
+  --brass:       #9d7a3f;   /* a warm metallic accent, used sparingly */
+
+  --ok:          #1f6b4f;
+  --warn:        #9a6414;
+  --danger:      #a03028;
+
+  /* Spacing. Everything is a multiple of 4px, which is what keeps a
+     layout looking tidy instead of accidentally lopsided. */
+  --gap-1: 4px;
+  --gap-2: 8px;
+  --gap-3: 12px;
+  --gap-4: 16px;
+  --gap-5: 24px;
+  --gap-6: 32px;
+  --gap-7: 48px;
+  --gap-8: 72px;
+
+  --radius:    12px;
+  --radius-sm: 8px;
+
+  /* Two soft shadows: one for resting cards, one for hover. */
+  --shadow:    0 1px 2px rgba(21, 24, 27, 0.04), 0 4px 16px rgba(21, 24, 27, 0.05);
+  --shadow-up: 0 2px 6px rgba(21, 24, 27, 0.06), 0 14px 34px rgba(21, 24, 27, 0.10);
+
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+}
+
+
+/* ------------------------------------------------------------
+   2. BASE
+   ------------------------------------------------------------ */
+
+/* border-box means padding and borders count INSIDE an element's
+   width. Without it, adding padding makes boxes unexpectedly wider
+   and layouts drift. Setting it on everything is a standard first move. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p { margin: 0; }
+
+a {
+  color: var(--forest);
+  text-decoration-color: rgba(18, 57, 50, 0.3);
+  text-underline-offset: 3px;
+}
+
+a:hover { text-decoration-color: var(--forest); }
+
+code {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  background: rgba(18, 57, 50, 0.07);
+  color: var(--forest);
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+/* Anything focused by the keyboard gets a clear ring. Never remove
+   this without replacing it - it is how keyboard users see where
+   they are on the page. */
+:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+
+/* ------------------------------------------------------------
+   3. LAYOUT
+   ------------------------------------------------------------ */
+
+.site-header {
+  background: var(--forest);
+  color: #eef1ee;
+  border-bottom: 3px solid var(--brass);
+}
+
+.site-header__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--gap-4) var(--gap-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-3);
+  color: inherit;
+  text-decoration: none;
+}
+
+.wordmark__dial {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--brass);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.wordmark__text {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.wordmark__tag {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(238, 241, 238, 0.6);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-5);
+}
+
+.site-nav a {
+  color: rgba(238, 241, 238, 0.82);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid transparent;
+}
+
+.site-nav a:hover,
+.site-nav a.is-active {
+  color: #ffffff;
+  border-bottom-color: var(--brass);
+}
+
+/* The centred reading column. A max-width matters: long lines of text
+   are genuinely harder to read, because the eye loses its place on
+   the way back to the start of the next line. */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--gap-7) var(--gap-5) var(--gap-8);
+}
+
+.container--narrow { max-width: 760px; }
+
+.page-head { margin-bottom: var(--gap-6); }
+
+.page-head h1 {
+  font-size: clamp(30px, 5vw, 42px);
+}
+
+/* clamp(min, preferred, max) lets the font size grow with the screen
+   but never get silly at either end. It replaces a pile of media
+   queries with one line. */
+
+.page-head p {
+  margin-top: var(--gap-3);
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: var(--gap-5);
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+
+/* ------------------------------------------------------------
+   4. COMPONENTS
+   ------------------------------------------------------------ */
+
+/* --- Card --- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--gap-5);
+  box-shadow: var(--shadow);
+}
+
+.card__title {
+  font-size: 18px;
+  margin-bottom: var(--gap-2);
+}
+
+
+/* --- Watch grid and watch card (used from step 3) --- */
+
+/* auto-fill + minmax is the whole responsive layout in one line:
+   "fit as many 260px-or-wider columns as will comfortably go".
+   On a phone that is one column, on a laptop three, with no media
+   queries at all. */
+.watch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--gap-5);
+}
+
+.watch-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.watch-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-up);
+}
+
+/* We have no photographs, so each watch gets a drawn "dial":
+   a circle on a soft gradient panel, with an emoji in the middle.
+   It reads as a product image without needing one. */
+.watch-card__dial {
+  height: 170px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(150deg, #eef1ee 0%, #dfe5e0 55%, #d3dbd5 100%);
+  border-bottom: 1px solid var(--line);
+}
+
+.watch-card__face {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--forest);
+  box-shadow: inset 0 0 0 5px rgba(157, 122, 63, 0.18), var(--shadow);
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+}
+
+.watch-card__body {
+  padding: var(--gap-4) var(--gap-5) var(--gap-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  flex: 1;   /* makes every card in a row the same height */
+}
+
+.watch-card__type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+.watch-card__name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.watch-card__desc {
+  font-size: 14px;
+  color: var(--ink-soft);
+  flex: 1;
+}
+
+.watch-card__price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.watch-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-3);
+}
+
+
+/* --- Badge: the little stock label --- */
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+/* "currentColor" above means the border copies the text colour, so
+   each variant below only has to set one property. */
+.badge--ok   { color: var(--ok); }
+.badge--low  { color: var(--warn); }
+.badge--out  { color: var(--danger); }
+
+
+/* --- Buttons --- */
+.btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-2);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn--primary {
+  background: var(--forest);
+  color: #ffffff;
+}
+
+.btn--primary:hover { background: var(--forest-soft); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--forest);
+  border-color: var(--line);
+}
+
+.btn--ghost:hover { border-color: var(--forest); }
+
+.btn--danger {
+  background: transparent;
+  color: var(--danger);
+  border-color: rgba(160, 48, 40, 0.35);
+}
+
+.btn--danger:hover { border-color: var(--danger); }
+
+.btn--full { width: 100%; }
+
+/* A disabled button must LOOK disabled, not just refuse to work.
+   "not-allowed" changes the mouse cursor so the reason is obvious. */
+.btn:disabled,
+.btn[disabled] {
+  background: #e8e6e1;
+  color: var(--muted);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+
+/* --- Forms --- */
+.field { margin-bottom: var(--gap-4); }
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: var(--gap-2);
+  color: var(--ink-soft);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(18, 57, 50, 0.12);
+}
+
+
+/* --- Table (the staff stock sheet) --- */
+.table-wrap {
+  overflow-x: auto;   /* on a narrow phone the table scrolls sideways
+                         instead of squashing or breaking the page */
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px var(--gap-4);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: #fbfaf8;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+
+/* --- Message bar: for errors and confirmations --- */
+.message {
+  padding: 12px var(--gap-4);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  margin-bottom: var(--gap-4);
+  border: 1px solid;
+}
+
+.message--error   { background: #fdf2f1; border-color: #f0cfcb; color: var(--danger); }
+.message--success { background: #f0f7f3; border-color: #cbe3d6; color: var(--ok); }
+.message--info    { background: #f4f6f8; border-color: var(--line);  color: var(--ink-soft); }
+
+
+/* ------------------------------------------------------------
+   5. UTILITIES
+   Tiny classes that do exactly one thing.
+   ------------------------------------------------------------ */
+.muted      { color: var(--muted); font-size: 14px; }
+.stack      { display: flex; flex-direction: column; gap: var(--gap-4); }
+.row        { display: flex; align-items: center; gap: var(--gap-3); flex-wrap: wrap; }
+.mt-4       { margin-top: var(--gap-4); }
+.mt-5       { margin-top: var(--gap-5); }
+.text-right { text-align: right; }
+
+/* Hidden from the screen, but still read aloud by screen readers.
+   Used for labels that would be visual clutter but that a blind user
+   still needs in order to understand a control. */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

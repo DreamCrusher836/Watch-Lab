@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Store Lab</title>
+  <meta name="description" content="A practice shop for learning stock, orders, database transactions, simulated payments and webhooks.">
+
+  <!-- An emoji favicon, drawn as a tiny SVG right here in the page.
+       Saves us adding an image file just for the browser tab. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>⌚</text></svg>">
+
+  <!-- Two fonts from Google Fonts: a serif for headings, a sans for text.
+       preconnect tells the browser to start opening the connection early,
+       so the fonts arrive a little sooner. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="wordmark" href="/">
+        <span class="wordmark__dial">⌚</span>
+        <span class="wordmark__text">
+          Watch Store
+          <span class="wordmark__tag">Lab</span>
+        </span>
+      </a>
+      <nav class="site-nav">
+        <a href="/" class="is-active">Shop</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/staff.html">Staff</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <h1>A small shop, built to break on purpose.</h1>
+      <p>
+        Six watches, real stock, a simulated payment provider and a webhook that
+        sometimes arrives twice. This is a learning project about the parts of
+        e-commerce that are genuinely hard: holding stock, database transactions,
+        duplicate events, and two people buying the last item at the same moment.
+      </p>
+    </div>
+
+    <!-- The live status panel. The JavaScript below fills these in by
+         calling our own API, so this page doubles as a working test of
+         everything we have built so far. -->
+    <div class="card">
+      <h2 class="card__title">Build status</h2>
+      <p class="muted">Live, from this server's own API.</p>
+
+      <div class="stack mt-4" id="status-panel">
+        <p class="muted">Checking…</p>
+      </div>
+    </div>
+
+    <div class="card mt-5">
+      <h2 class="card__title">What lands when</h2>
+      <div class="table-wrap mt-4">
+        <table>
+          <thead>
+            <tr><th>Step</th><th>Feature</th><th>Concept</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1 &amp; 2</td><td>Watches, stock, staff routes</td><td>Foreign keys, constraints, parameterised SQL</td></tr>
+            <tr><td>3</td><td>The shop front and staff page</td><td>Fetching an API from the browser</td></tr>
+            <tr><td>4 &amp; 5</td><td>Cart and orders</td><td>Database transactions</td></tr>
+            <tr><td>6 &amp; 7</td><td>Simulated payment and webhook</td><td>Event handling, releasing held stock</td></tr>
+            <tr><td>8 &amp; 9</td><td>The two hard tests</td><td>Duplicate events, race conditions</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    Watch Store Lab — a practice project. Nothing here is for sale, and no real money moves.
+  </footer>
+
+  <script src="js/home.js"></script>
+</body>
+</html>

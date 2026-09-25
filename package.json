@@ -1,0 +1,14 @@
+{
+  "name": "watch-store-lab",
+  "version": "1.0.0",
+  "description": "A practice shop for learning stock, orders, transactions, payments and webhooks.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
+  }
+}
