@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock room — Watch Store Lab</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>⌚</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="wordmark" href="/">
+        <span class="wordmark__dial">⌚</span>
+        <span class="wordmark__text">
+          Watch Store
+          <span class="wordmark__tag">Lab</span>
+        </span>
+      </a>
+      <nav class="site-nav">
+        <a href="/">Shop</a>
+        <a href="/cart.html">
+          Cart
+          <span class="cart-badge" id="cart-count" hidden>0</span>
+        </a>
+        <a href="/staff.html" class="is-active">Staff</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="page-head">
+      <h1>Stock room</h1>
+      <p>
+        Staff only. Enter the key to see the stock sheet and change quantities.
+        This is a mock stand-in for a real login — a shared password instead of
+        user accounts.
+      </p>
+    </div>
+
+    <!-- SECTION 1: the key form.
+         We hide this once the key works, rather than deleting it, so
+         we can show it again if the key is later rejected. -->
+    <div class="card" id="key-card">
+      <h2 class="card__title">Sign in</h2>
+
+      <!-- A real <form> element, not just an input and a button.
+           Using a form means the Enter key submits it for free, and
+           screen readers announce it properly. -->
+      <form id="key-form" class="mt-4">
+        <div class="field">
+          <label for="staff-key">Staff key</label>
+          <!-- type="password" hides the characters as they are typed.
+               autocomplete="off" stops the browser offering to save it. -->
+          <input type="password" id="staff-key" autocomplete="off" placeholder="from your .env file" required>
+        </div>
+        <button type="submit" class="btn btn--primary">Open the stock sheet</button>
+      </form>
+
+      <div id="key-message" class="mt-4"></div>
+    </div>
+
+    <!-- SECTION 2: the stock sheet. Hidden until the key works. -->
+    <div id="stock-section" hidden>
+      <div class="row" style="justify-content: space-between; margin-bottom: var(--gap-4);">
+        <h2 style="font-size: 20px;">Stock sheet</h2>
+        <button class="btn btn--ghost" id="sign-out">Sign out</button>
+      </div>
+
+      <div id="stock-message"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Watch</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>In stock</th>
+              <th><span class="visually-hidden">Save</span></th>
+            </tr>
+          </thead>
+          <tbody id="stock-rows"></tbody>
+        </table>
+      </div>
+
+      <p class="muted mt-4">
+        Changes are saved straight to the database. The shop front will show
+        the new numbers the next time it is loaded.
+      </p>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    Watch Store Lab — a practice project.
+  </footer>
+
+  <script src="js/cart-storage.js"></script>
+  <script src="js/staff.js"></script>
+</body>
+</html>

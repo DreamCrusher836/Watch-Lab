@@ -523,3 +523,163 @@ tbody tr:last-child td { border-bottom: none; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+
+/* ------------------------------------------------------------
+   6. ADDITIONS FROM STEP 3
+   ------------------------------------------------------------ */
+
+/* The little item count beside "Cart" in the header. */
+.cart-badge {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 6px;
+  margin-left: 2px;
+  border-radius: 999px;
+  background: var(--brass);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  vertical-align: 1px;
+}
+
+/* The short "Added to cart" / "Only 1 in stock" note under each button.
+   min-height reserves the space even when the note is empty, so the
+   card does not jump up and down as messages come and go. */
+.watch-card__note {
+  min-height: 20px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* The quantity boxes on the staff stock sheet. */
+.stock-input {
+  width: 90px;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.stock-input:focus {
+  outline: none;
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(18, 57, 50, 0.12);
+}
+
+/* ------------------------------------------------------------
+   A GENUINE BUG, CAUGHT WHILE BUILDING THIS PAGE.
+   Worth keeping the explanation, because it will happen to you again.
+
+   The HTML attribute "hidden" is supposed to hide an element. The
+   browser does that with a built-in rule:  [hidden] { display: none }.
+
+   But our own rule  .cart-badge { display: inline-block }  is more
+   SPECIFIC than the browser's - a class beats a bare attribute - so
+   ours won and the badge stayed visible, showing a pointless "0".
+
+   The fix is one rule that beats everything. "!important" is usually
+   a bad habit because it makes CSS hard to reason about, but this is
+   the exception it exists for: "hidden means hidden, no arguments".
+   ------------------------------------------------------------ */
+[hidden] {
+  display: none !important;
+}
+
+
+/* ------------------------------------------------------------
+   7. ADDITIONS FROM STEP 4 - cart and order totals
+   ------------------------------------------------------------ */
+
+tfoot th {
+  background: #fbfaf8;
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+}
+
+/* The grand total, set in the serif face so it reads as the number
+   that matters rather than just another cell. */
+.cart-total {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+
+/* ------------------------------------------------------------
+   8. ADDITIONS FROM STEP 6 - the payment page
+   ------------------------------------------------------------ */
+
+/* The two payment buttons sit side by side, and wrap onto separate
+   lines on a narrow phone rather than squashing. */
+.pay-buttons {
+  display: flex;
+  gap: var(--gap-3);
+  flex-wrap: wrap;
+}
+
+.pay-buttons .btn {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* The raw event, shown as code. "pre" keeps the line breaks and
+   spacing exactly as written, which is the whole point of showing
+   JSON. overflow-x lets a long line scroll instead of breaking
+   the page layout. */
+.event-log {
+  margin: var(--gap-4) 0 0;
+  padding: var(--gap-4);
+  background: #10231f;
+  color: #cfe0d8;
+  border-radius: var(--radius-sm);
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+
+/* ------------------------------------------------------------
+   9. ADDITIONS FROM STEP 7 - the confirmation page
+   ------------------------------------------------------------ */
+
+/* The big result at the top of order.html. Centred and generously
+   spaced, because it is the one thing the customer came to read. */
+.outcome {
+  text-align: center;
+  padding: var(--gap-7) var(--gap-5);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.outcome__mark {
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: var(--gap-4);
+}
+
+.outcome h1 {
+  font-size: clamp(26px, 4vw, 34px);
+  margin-bottom: var(--gap-3);
+}
+
+.outcome p {
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin: 0 auto;
+}

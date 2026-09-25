@@ -23,8 +23,27 @@ npm start
 
 Open <http://localhost:3000>.
 
-Before the first run, paste `sql/01_watches_and_stock.sql` into the Supabase
-SQL Editor and press Run. That creates the tables and the six watches.
+Before the first run, paste each file in `sql/` into the Supabase SQL Editor, in
+order, and press Run.
+
+| Command | What it does |
+| --- | --- |
+| `npm start` | Run the shop at <http://localhost:3000> |
+| `npm run reset` | Put the shop back to its seeded state (deletes all orders) |
+| `npm run test:transaction` | Show why the order route needs a transaction |
+| `npm run test:duplicate` | 21 checks — the webhook is idempotent |
+| `npm run test:race` | 13 checks — the shop cannot oversell |
+
+## What it demonstrates
+
+| Problem | How it is solved |
+| --- | --- |
+| A crash half way through placing an order | Everything runs in one transaction — all of it, or none |
+| Two people buying the last watch at once | The stock check lives *inside* the update: `where quantity >= $1` |
+| The payment provider sending the same event twice | A unique `event_id` plus `on conflict do nothing` |
+| A failed payment leaving stock held | The webhook returns it, in the same transaction as the status change |
+| Price tampering in the browser | The cart stores only ids and quantities; the server reads prices from the database |
+| Forged webhook calls | A shared secret header; wrong or missing → `401` |
 
 ---
 
@@ -86,6 +105,19 @@ tests/         small Node scripts for the duplicate-webhook and race tests
 LEARNING_NOTES.md   what each step taught, written up as I went
 ```
 
+## Tests
+
+Run these with the server already started in another terminal (`npm start`).
+They clean up after themselves.
+
+| Script | Proves |
+| --- | --- |
+| `npm run test:transaction` | why the order route needs a transaction |
+| `npm run test:duplicate` | the same payment event can arrive many times and change the shop exactly once |
+| `npm run test:race` | however many people reach for the last watch at once, exactly one gets it |
+
+`npm run reset` puts the shop back to its seeded state at any time.
+
 ## API
 
 | Method | Route | Who |
@@ -95,5 +127,34 @@ LEARNING_NOTES.md   what each step taught, written up as I went
 | `GET` | `/api/watches/:id` | anyone |
 | `GET` | `/api/staff/stock` | staff — needs `x-staff-key` header |
 | `PUT` | `/api/staff/stock/:watchId` | staff — needs `x-staff-key` header |
+| `POST` | `/api/orders` | anyone — creates an order and holds stock |
+| `GET` | `/api/orders/:id` | anyone — an order with its lines and status |
+| `POST` | `/api/payments/simulate` | anyone — the fake provider; sends an event to the webhook |
+| `POST` | `/api/webhooks/payment` | the provider — needs `x-webhook-secret` header |
 
-Orders, payments and webhooks arrive in steps 4–7.
+## SQL files
+
+Run these by hand in the Supabase SQL Editor, in order:
+
+| File | Creates |
+| --- | --- |
+| `sql/01_watches_and_stock.sql` | `watches`, `stock`, and the six seed watches |
+| `sql/02_orders_and_order_items.sql` | `orders`, `order_items` |
+| `sql/03_payments.sql` | `payments` (with the unique `event_id`) |
+
+---
+
+## Known shortcuts
+
+This is a learning project, and it is honest about what it skips:
+
+- **Order ids are sequential**, so anyone can change the number in the URL and
+  read someone else's order. A real shop needs a login or unguessable ids.
+- **The staff key is a shared password**, standing in for real user accounts.
+- **The webhook uses a shared secret**, where real providers sign the message
+  body so you can also prove it was not altered.
+- **Held stock is never released** — an unpaid order holds its watches forever.
+  A real shop expires abandoned orders after 15–30 minutes.
+
+`LEARNING_NOTES.md` explains every concept in the project from scratch, step by
+step, with a glossary.

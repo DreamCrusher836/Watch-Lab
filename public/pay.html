@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment — Watch Store Lab</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>⌚</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="wordmark" href="/">
+        <span class="wordmark__dial">⌚</span>
+        <span class="wordmark__text">
+          Watch Store
+          <span class="wordmark__tag">Lab</span>
+        </span>
+      </a>
+      <nav class="site-nav">
+        <a href="/">Shop</a>
+        <a href="/cart.html">
+          Cart
+          <span class="cart-badge" id="cart-count" hidden>0</span>
+        </a>
+        <a href="/staff.html">Staff</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container container--narrow">
+
+    <div class="page-head">
+      <h1>Payment</h1>
+      <p>
+        Your watches are held. Nothing is charged — the payment provider on this
+        site is a pretend one we wrote ourselves.
+      </p>
+    </div>
+
+    <div id="order-summary">
+      <p class="muted">Loading your order…</p>
+    </div>
+
+    <!-- The payment buttons. Hidden until we know the order is still
+         awaiting payment - there is no sense offering to pay twice. -->
+    <div class="card mt-5" id="payment-card" hidden>
+      <h2 class="card__title">Simulated payment</h2>
+      <p class="muted">
+        There is no real card form. Choose what the pretend payment provider
+        should report back to the shop.
+      </p>
+
+      <div id="payment-message" class="mt-4"></div>
+
+      <div class="pay-buttons mt-4" id="pay-buttons">
+        <button class="btn btn--primary" id="pay-success">
+          Simulate successful payment
+        </button>
+        <button class="btn btn--danger" id="pay-failed">
+          Simulate failed payment
+        </button>
+      </div>
+
+      <!-- Appears once the webhook has been dealt with. We do not
+           redirect automatically, so you get a chance to read the
+           event panel below before moving on. -->
+      <a class="btn btn--primary btn--full mt-4" id="view-order" href="#" hidden>
+        View your order →
+      </a>
+    </div>
+
+    <!-- What actually travelled over the wire. This is not something a
+         real shop would ever show a customer - it is here so you can
+         watch the machinery work instead of guessing. -->
+    <div class="card mt-5" id="event-card" hidden>
+      <h2 class="card__title">What just happened</h2>
+      <p class="muted">The event our fake provider sent to the shop's webhook.</p>
+      <pre class="event-log" id="event-log"></pre>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    Watch Store Lab — a practice project. Nothing here is for sale, and no real money moves.
+  </footer>
+
+  <script src="js/cart-storage.js"></script>
+  <script src="js/pay.js"></script>
+</body>
+</html>

@@ -4,7 +4,11 @@
   "description": "A practice shop for learning stock, orders, transactions, payments and webhooks.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "reset": "node tests/reset-shop.js",
+    "test:transaction": "node tests/broken-order-demo.js",
+    "test:duplicate": "node tests/duplicate-webhook.js",
+    "test:race": "node tests/last-watch-race.js"
   },
   "dependencies": {
     "dotenv": "^18.0.3",

@@ -17,6 +17,9 @@ const db = require('./db');
 // Our route files. Each one exports a "router" - a bundle of related routes.
 const watchesRouter = require('./routes/watches');
 const staffRouter = require('./routes/staff');
+const ordersRouter = require('./routes/orders');
+const paymentsRouter = require('./routes/payments');
+const webhooksRouter = require('./routes/webhooks');
 
 const app = express();
 
@@ -57,6 +60,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ------------------------------------------------------------
 app.use('/api/watches', watchesRouter);
 app.use('/api/staff', staffRouter);
+app.use('/api/orders', ordersRouter);
+app.use('/api/payments', paymentsRouter);
+app.use('/api/webhooks', webhooksRouter);
 
 
 // ------------------------------------------------------------
